@@ -10,7 +10,7 @@ class ToDoItem extends React.Component {
           type="checkbox"
           checked={this.props.status}
           onChange={this.props.handleBoxCheck} />
-          <label for={this.props.taskID}>{this.props.name} </label>
+          <label htmlFor={this.props.taskID}>{this.props.name} </label>
         <a href="#" onClick={this.props.removeItem}>X</a>
       </div>
     )

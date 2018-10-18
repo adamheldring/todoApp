@@ -8,7 +8,19 @@ class App extends React.Component {
     currentText: "",
     placeHolderText: ""
   }
-
+  componentDidMount() {
+    if (localStorage.getItem("toDoList")) {
+      console.log('found storage')
+      console.log(localStorage.getItem("toDoList"))
+      const dataFromStorage = JSON.parse(localStorage.getItem("toDoList"))
+      console.log(dataFromStorage)
+      this.setState({
+        toDoItems: dataFromStorage
+      })
+    } else {
+      console.log('nothing in storage')
+    }
+  }
   handleBoxCheck = (checked, taskID) => {
     const listUpdate = this.state.toDoItems
     listUpdate[taskID].done = !listUpdate[taskID].done
@@ -21,6 +33,10 @@ class App extends React.Component {
     listUpdate.splice(removeIndex, 1)
     this.setState({
       toDoItems: listUpdate
+    }, () => {
+      const dataToStorage = JSON.stringify(this.state.toDoItems)
+      console.log(dataToStorage)
+      localStorage.setItem("toDoList", JSON.stringify(this.state.toDoItems))
     })
   }
   handleNewText = e => this.setState({
@@ -41,6 +57,10 @@ class App extends React.Component {
         toDoItems: this.state.toDoItems.concat(newListItem),
         currentText: "",
         placeHolderText: ""
+      }, () => {
+        const dataToStorage = JSON.stringify(this.state.toDoItems)
+        console.log(dataToStorage)
+        localStorage.setItem("toDoList", JSON.stringify(this.state.toDoItems))
       })
     }
   }
