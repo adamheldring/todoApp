@@ -3,14 +3,15 @@ import React from "react"
 class ToDoItem extends React.Component {
 
   render() {
-    console.log(this.props.status)
     return (
       <div>
         <input
+          id={this.props.taskID}
           type="checkbox"
           checked={this.props.status}
           onChange={this.props.handleBoxCheck} />
-        {this.props.name}
+          <label for={this.props.taskID}>{this.props.name} </label>
+        <a href="#" onClick={this.props.removeItem}>X</a>
       </div>
     )
   }
