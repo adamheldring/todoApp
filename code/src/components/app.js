@@ -11,9 +11,7 @@ class App extends React.Component {
   componentDidMount() {
     if (localStorage.getItem("toDoList")) {
       console.log('found storage')
-      console.log(localStorage.getItem("toDoList"))
       const dataFromStorage = JSON.parse(localStorage.getItem("toDoList"))
-      console.log(dataFromStorage)
       this.setState({
         toDoItems: dataFromStorage
       })
@@ -35,13 +33,12 @@ class App extends React.Component {
       toDoItems: listUpdate
     }, () => {
       const dataToStorage = JSON.stringify(this.state.toDoItems)
-      console.log(dataToStorage)
-      localStorage.setItem("toDoList", JSON.stringify(this.state.toDoItems))
+      localStorage.setItem("toDoList", dataToStorage)
     })
   }
   handleNewText = e => this.setState({
     currentText: e.target.value
-  }, () => console.log(this.state.currentText))
+  })
 
   handleSubmitNew = (e) => {
     e.preventDefault()
@@ -52,15 +49,13 @@ class App extends React.Component {
         name: this.state.currentText.toUpperCase(),
         done: false
       }
-      console.log(newListItem)
       this.setState({
         toDoItems: this.state.toDoItems.concat(newListItem),
         currentText: "",
         placeHolderText: ""
       }, () => {
         const dataToStorage = JSON.stringify(this.state.toDoItems)
-        console.log(dataToStorage)
-        localStorage.setItem("toDoList", JSON.stringify(this.state.toDoItems))
+        localStorage.setItem("toDoList", dataToStorage)
       })
     }
   }
