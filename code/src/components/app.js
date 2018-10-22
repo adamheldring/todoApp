@@ -5,30 +5,29 @@ class App extends React.Component {
 
   state = {
     toDoItems: [],
+    filteredItems: [],
     currentText: "",
-    placeHolderText: ""
+    placeHolderText: "",
+    searchString: ""
   }
   componentDidMount() {
     if (localStorage.getItem("toDoList")) {
-      console.log('found storage')
+      console.log('found localStorage')
       const dataFromStorage = JSON.parse(localStorage.getItem("toDoList"))
       this.setState({
-        toDoItems: dataFromStorage
+        toDoItems: dataFromStorage,
+        filteredItems: dataFromStorage
       })
     } else {
-      console.log('nothing in storage')
+      console.log('nothing in localStorage')
     }
   }
   handleBoxCheck = (checked, taskID) => {
     const listUpdate = this.state.toDoItems
-    listUpdate[taskID].done = !listUpdate[taskID].done
-    this.setState({
-      toDoItems: listUpdate
-    })
-  }
-  removeItem = (removeIndex) => {
-    const listUpdate = this.state.toDoItems
-    listUpdate.splice(removeIndex, 1)
+    const checkItem = listUpdate.find(item => (item.id === taskID))
+    const checkIndex = listUpdate.indexOf(checkItem)
+
+    listUpdate[checkIndex].done = !listUpdate[checkIndex].done
     this.setState({
       toDoItems: listUpdate
     }, () => {
@@ -36,6 +35,21 @@ class App extends React.Component {
       localStorage.setItem("toDoList", dataToStorage)
     })
   }
+  removeItem = (removeItemID) => {
+    const listUpdate = this.state.toDoItems
+    const removeItem = listUpdate.find(item => (item.id === removeItemID))
+    const removeIndex = listUpdate.indexOf(removeItem)
+
+    listUpdate.splice(removeIndex, 1)
+    this.setState({
+      toDoItems: listUpdate
+    }, () => {
+      const dataToStorage = JSON.stringify(this.state.toDoItems)
+      localStorage.setItem("toDoList", dataToStorage)
+      this.handleSearch(this.state.searchString)
+    })
+  }
+
   handleNewText = e => this.setState({
     currentText: e.target.value
   })
@@ -47,7 +61,8 @@ class App extends React.Component {
     } else {
       const newListItem = {
         name: this.state.currentText.toUpperCase(),
-        done: false
+        done: false,
+        id: new Date
       }
       this.setState({
         toDoItems: this.state.toDoItems.concat(newListItem),
@@ -56,11 +71,33 @@ class App extends React.Component {
       }, () => {
         const dataToStorage = JSON.stringify(this.state.toDoItems)
         localStorage.setItem("toDoList", dataToStorage)
+        this.handleSearch(this.state.searchString)
       })
     }
   }
+  handleSearchChange = (e) => {
+    const currentSearch = e.target.value
+    this.handleSearch(currentSearch)
+  }
+
+  handleSearch = (newUserSearch) => {
+    const currentSearch = newUserSearch
+    let currentFilter = []
+    if (currentSearch !== "") {
+       currentFilter = this.state.toDoItems.filter(item => {
+        return item.name.toLowerCase().includes(currentSearch.toLowerCase())
+      })
+    } else {
+      currentFilter = this.state.toDoItems
+    }
+    this.setState({
+      filteredItems: currentFilter,
+      searchString: currentSearch
+    })
+  }
 
   render() {
+    const renderList = this.state.filteredItems
     return (
       <div className="master-wrapper">
         <header className="header">
@@ -74,14 +111,14 @@ class App extends React.Component {
 
           {(!this.state.toDoItems.length) && <i>( CREATE A TASK )</i>}
 
-          {this.state.toDoItems.map((item, index) => {
+          {this.state.filteredItems.map((item, index) => {
             return <ToDoItem
               key={index}
-              taskID={index}
+              taskID={item.id}
               name={item.name}
               status={item.done}
-              handleBoxCheck={() => this.handleBoxCheck(item.done, index)}
-              removeItem={() => this.removeItem(index)} />
+              handleBoxCheck={() => this.handleBoxCheck(item.done, item.id)}
+              removeItem={() => this.removeItem(item.id)} />
           })}
 
           <form onSubmit={this.handleSubmitNew}>
@@ -92,6 +129,13 @@ class App extends React.Component {
               onChange={this.handleNewText} />
             <input type="submit" value="Add" />
           </form>
+        </section>
+        <section className="search-section">
+          <input
+            type="text"
+            className="searchbar"
+            onChange={this.handleSearchChange}
+            value={this.state.searchString} />
         </section>
       </div>
     )
