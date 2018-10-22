@@ -121,21 +121,24 @@ class App extends React.Component {
               removeItem={() => this.removeItem(item.id)} />
           })}
 
-          <form onSubmit={this.handleSubmitNew}>
+          <form className="list-section__formField" onSubmit={this.handleSubmitNew}>
             <input
+              className="list-section__addField"
               type="text"
               value={this.state.currentText}
               placeholder={this.state.placeHolderText}
               onChange={this.handleNewText} />
-            <input type="submit" value="Add" />
+            <input className="list-section__addButton" type="submit" value="+" />
           </form>
         </section>
         <section className="search-section">
+          <img className="searchicon" src="./searchicon.png" />
           <input
             type="text"
-            className="searchbar"
+            className="searchBar"
             onChange={this.handleSearchChange}
             value={this.state.searchString} />
+          <input type="button" className="clearButton" value="C" onClick={() => this.handleSearch("")} />
         </section>
       </div>
     )

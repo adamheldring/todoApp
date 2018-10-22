@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  font-size: 18px;
+  font-size: 20px;
   background: #FFF;
 }
 input {
@@ -13,6 +13,12 @@ input {
 a {
   color: red;
   text-decoration: none;
+}
+button,
+input {
+  border: none;
+  border: 1px solid #cccccc;
+  color: #474747;
 }
 .master-wrapper {
   width: 40%;
@@ -53,6 +59,37 @@ a {
     text-decoration: line-through;
     color: #888888;
   }
+  &__formField {
+    margin-top: 10px;
+  }
+  &__addField {
+    padding: 5px;
+    font-size: 15px;
+  }
+  &__addButton {
+    padding: 5px;
+    font-size: 15px;
+    width: 32px;
+  }
+}
+.search-section {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+.searchBar {
+  padding: 5px;
+  font-size: 15px;
+}
+.clearButton {
+  padding: 5px;
+  font-size: 15px;
+  width: 32px;
+}
+.searchicon {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
 }
 
 @media screen and (max-width: 600px) {
