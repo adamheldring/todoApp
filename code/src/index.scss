@@ -49,6 +49,9 @@ a {
     margin-top: 10px;
     text-decoration: underline;
   }
+  &__item--checked {
+    text-decoration: line-through;
+  }
 }
 
 @media screen and (max-width: 600px) {
