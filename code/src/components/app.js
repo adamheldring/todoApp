@@ -12,14 +12,14 @@ class App extends React.Component {
   }
   componentDidMount() {
     if (localStorage.getItem("toDoList")) {
-      console.log('found localStorage')
+      console.log("found localStorage")
       const dataFromStorage = JSON.parse(localStorage.getItem("toDoList"))
       this.setState({
         toDoItems: dataFromStorage,
         filteredItems: dataFromStorage
       })
     } else {
-      console.log('nothing in localStorage')
+      console.log("nothing in localStorage")
     }
   }
   handleBoxCheck = (checked, taskID) => {
@@ -62,7 +62,7 @@ class App extends React.Component {
       const newListItem = {
         name: this.state.currentText.toUpperCase(),
         done: false,
-        id: new Date
+        id: new Date()
       }
       this.setState({
         toDoItems: this.state.toDoItems.concat(newListItem),
@@ -84,7 +84,7 @@ class App extends React.Component {
     const currentSearch = newUserSearch
     let currentFilter = []
     if (currentSearch !== "") {
-       currentFilter = this.state.toDoItems.filter(item => {
+      currentFilter = this.state.toDoItems.filter((item) => {
         return item.name.toLowerCase().includes(currentSearch.toLowerCase())
       })
     } else {
@@ -97,7 +97,6 @@ class App extends React.Component {
   }
 
   render() {
-    const renderList = this.state.filteredItems
     return (
       <div className="master-wrapper">
         <header className="header">
@@ -132,7 +131,7 @@ class App extends React.Component {
           </form>
         </section>
         <section className="search-section">
-          <img className="searchicon" src="./searchicon.png" />
+          <img className="searchicon" src="./searchicon.png" alt="search" />
           <input
             type="text"
             className="searchBar"
