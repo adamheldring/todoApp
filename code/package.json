@@ -5,6 +5,7 @@
   "homepage": "https://adamheldring.github.io/todoApp",
   "dependencies": {
     "eslint-config-technigo": "^1.4.0",
+    "gh-pages": "^2.0.1",
     "node-sass": "^4.9.4",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -23,8 +24,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "gh-pages": "^2.0.1"
-  }
+  ]
 }
