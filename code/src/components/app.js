@@ -10,7 +10,6 @@ class App extends React.Component {
     placeHolderText: "",
     searchString: ""
   }
-
   componentDidMount() {
     if (localStorage.getItem("toDoList")) {
       console.log("found localStorage")
@@ -23,7 +22,6 @@ class App extends React.Component {
       console.log("nothing in localStorage")
     }
   }
-
   handleBoxCheck = (checked, taskID) => {
     const listUpdate = this.state.toDoItems
     const checkItem = listUpdate.find(item => (item.id === taskID))
@@ -32,24 +30,23 @@ class App extends React.Component {
     listUpdate[checkIndex].done = !listUpdate[checkIndex].done
     this.setState({
       toDoItems: listUpdate
+    }, () => {
+      const dataToStorage = JSON.stringify(this.state.toDoItems)
+      localStorage.setItem("toDoList", dataToStorage)
     })
-    const dataToStorage = JSON.stringify(listUpdate)
-    localStorage.setItem("toDoList", dataToStorage)
   }
-
   removeItem = (removeItemID) => {
     const listUpdate = this.state.toDoItems
-    const removeItem = listUpdate.find(item => (item.id === removeItemID))
-    const removeIndex = listUpdate.indexOf(removeItem)
-
-    listUpdate.splice(removeIndex, 1)
+      .filter(item => {
+        return item.id !== removeItemID
+      })
     this.setState({
       toDoItems: listUpdate
+    }, () => {
+      const dataToStorage = JSON.stringify(this.state.toDoItems)
+      localStorage.setItem("toDoList", dataToStorage)
+      this.handleSearch(this.state.searchString)
     })
-    const dataToStorage = JSON.stringify(listUpdate)
-    localStorage.setItem("toDoList", dataToStorage)
-    this.handleSearch(this.state.searchString)
-
   }
 
   handleNewText = e => this.setState({
@@ -58,18 +55,16 @@ class App extends React.Component {
 
   handleSubmitNew = (e) => {
     e.preventDefault()
-    let listUpdate = this.state.toDoItems
     if (!this.state.currentText.length) {
       this.setState({ placeHolderText: "Give your task a name" })
     } else {
       const newListItem = {
         name: this.state.currentText.toUpperCase(),
         done: false,
-        id: new Date()
+        id: Date.now()
       }
-      listUpdate = listUpdate.concat(newListItem)
       this.setState({
-        toDoItems: listUpdate,
+        toDoItems: this.state.toDoItems.concat(newListItem),
         currentText: "",
         placeHolderText: ""
       }, () => {
@@ -77,12 +72,8 @@ class App extends React.Component {
         localStorage.setItem("toDoList", dataToStorage)
         this.handleSearch(this.state.searchString)
       })
-      const dataToStorage = JSON.stringify(listUpdate)
-      localStorage.setItem("toDoList", dataToStorage)
-      this.handleSearch(this.state.searchString)
     }
   }
-
   handleSearchChange = (e) => {
     const currentSearch = e.target.value
     this.handleSearch(currentSearch)
