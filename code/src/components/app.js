@@ -10,6 +10,7 @@ class App extends React.Component {
     placeHolderText: "",
     searchString: ""
   }
+
   componentDidMount() {
     if (localStorage.getItem("toDoList")) {
       console.log("found localStorage")
@@ -22,11 +23,11 @@ class App extends React.Component {
       console.log("nothing in localStorage")
     }
   }
+
   handleBoxCheck = (checked, taskID) => {
     const listUpdate = this.state.toDoItems
     const checkItem = listUpdate.find(item => (item.id === taskID))
     const checkIndex = listUpdate.indexOf(checkItem)
-
     listUpdate[checkIndex].done = !listUpdate[checkIndex].done
     this.setState({
       toDoItems: listUpdate
@@ -35,6 +36,7 @@ class App extends React.Component {
       localStorage.setItem("toDoList", dataToStorage)
     })
   }
+
   removeItem = (removeItemID) => {
     const listUpdate = this.state.toDoItems
       .filter(item => {
@@ -74,6 +76,7 @@ class App extends React.Component {
       })
     }
   }
+  
   handleSearchChange = (e) => {
     const currentSearch = e.target.value
     this.handleSearch(currentSearch)
